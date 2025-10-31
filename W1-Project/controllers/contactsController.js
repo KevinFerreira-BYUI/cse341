@@ -1,5 +1,5 @@
 const mongo = require("../data/db");
-const ObjectId = require("mongodb").ObjectId;
+const { ObjectId } = require("mongodb");
 
 const getAll = async (req, res) => {
    const result = await mongo.getDb().db().collection("Contacts").find();
@@ -10,7 +10,7 @@ const getAll = async (req, res) => {
 };
 
 const getSingle = async (req, res) => {
-    const id = req.params.id;
+    const id = String(req.params.id)
     const contactId = new ObjectId(id);
     const result = await mongo.getDb().db().collection("Contacts").find({_id: contactId});
     result.toArray().then((contacts) => {
