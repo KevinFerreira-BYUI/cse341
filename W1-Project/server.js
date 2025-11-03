@@ -3,10 +3,12 @@ const app = express();
 const mongo = require("./data/db");
 const indexRoute = require("./routes/index");
 const contactsRoute = require("./routes/contactsRoute");
+const bodyParser = require("body-parser");
 const port = process.env.PORT | 4000;
 
 app.use("/", indexRoute);
 app.use("/Contacts", contactsRoute);
+app.use(bodyParser.json());
 
 mongo.iniDb((err) => {
     if(err){
