@@ -6,9 +6,10 @@ const contactsRoute = require("./routes/contactsRoute");
 const bodyParser = require("body-parser");
 const port = process.env.PORT | 4000;
 
+app.use(bodyParser.json());
 app.use("/", indexRoute);
 app.use("/Contacts", contactsRoute);
-app.use(bodyParser.json());
+
 
 mongo.iniDb((err) => {
     if(err){
