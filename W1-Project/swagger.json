@@ -24,7 +24,7 @@
         }
       }
     },
-    "/contacts": {
+    "/contacts/": {
       "get": {
         "tags": [
           "Contacts"
