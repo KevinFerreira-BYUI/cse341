@@ -3,6 +3,7 @@ const { ObjectId } = require("mongodb");
 const util = require("../utils/utils");
 
 const getAll = async (req, res) => {
+    //#swagger.tags=['Contacts']
    const result = await mongo.getDb().db().collection("Contacts").find();
    result.toArray().then((contacts) => {
     res.setHeader("Content-type", "application/json");
@@ -11,6 +12,7 @@ const getAll = async (req, res) => {
 };
 
 const getSingle = async (req, res) => {
+    //#swagger.tags=['Contacts']
     const id = String(req.params.id)
     const contactId = new ObjectId(id);
     const result = await mongo.getDb().db().collection("Contacts").find({_id: contactId});
@@ -31,6 +33,7 @@ const getSingle = async (req, res) => {
 };
 
 const createContact = async (req, res) => {
+    //#swagger.tags=['Contacts']
     const contact = {
         firstName: req.body.firstName,
         lastName: req.body.lastName,
@@ -52,6 +55,7 @@ const createContact = async (req, res) => {
 };
 
 const updateContact = async (req, res) => {
+    //#swagger.tags=['Contacts']
    const id = String(req.params.id);
    const contactId = new ObjectId(id);
    const contact = {
@@ -75,6 +79,7 @@ const updateContact = async (req, res) => {
 };
 
 const deleteContact = async (req, res) => {
+    //#swagger.tags=['Contacts']
     const id = String(req.params.id);
     const contactId = new ObjectId(id);
 
@@ -83,7 +88,10 @@ const deleteContact = async (req, res) => {
     if(response.deletedCount > 0){
         //res.status(204).send()
         res.send(
-            util.messageToUser(`${contactId} has been Deleted!`)
+            util.messageToUser(`${contactId} has been Deleted!`),
+            console.log(
+                getSingle()
+            )
         );
     } else{
         res.status(500).send(
