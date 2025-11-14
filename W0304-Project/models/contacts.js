@@ -1,16 +1,20 @@
 const mongoose = require("mongoose");
 const { contactsConnection } = require("./db");
-const { ObjectId } = require("mongodb");
 
-const contacsSchema = new mongoose.Schema({
-    id: ObjectId,
-    firstName: String,
-    lastName: String,
-    gender: String,
-    email: String,
-    birthday: Date,
-    favColor: String
-});
+
+const contacsSchema = new mongoose.Schema(
+    {
+        firstName: String,
+        lastName: String,
+        gender: String,
+        email: String,
+        birthday: Date,
+        favColor: String
+    },
+    {
+        collection: "Contacts"
+    }
+);
 
 
 module.exports = contactsConnection.model("Contacts", contacsSchema);

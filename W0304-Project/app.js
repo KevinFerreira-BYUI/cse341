@@ -11,11 +11,11 @@ const index = require("./routes/index");
 const cttRoute = require("./routes/contacts");
 
 
-
-
+// App Routes
 app.use("/", index);
 app.use("/contacts", cttRoute);
 
 
+// Launch server
 app.listen(port, console.log(`Running at localhost:${port}`));
 
