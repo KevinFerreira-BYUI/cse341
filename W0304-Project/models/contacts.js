@@ -8,11 +8,12 @@ const contacsSchema = new mongoose.Schema(
         lastName: String,
         gender: String,
         email: String,
-        birthday: Date,
+        birthday: String,
         favColor: String
     },
     {
-        collection: "Contacts"
+        collection: "Contacts",
+        versionKey: false
     }
 );
 
