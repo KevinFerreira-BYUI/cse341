@@ -1,5 +1,4 @@
-const mongoose = require("mongoose");
-const { contactsConnection } = require("./db");
+const mongoose = require("./db")
 
 
 const contacsSchema = new mongoose.Schema(
@@ -18,4 +17,4 @@ const contacsSchema = new mongoose.Schema(
 );
 
 
-module.exports = contactsConnection.model("Contacts", contacsSchema);
+module.exports = mongoose.model("Contacts", contacsSchema);

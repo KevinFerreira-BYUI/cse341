@@ -10,7 +10,7 @@ router.get("/:id", cttControler.getById);
 
 // Post
 // #swagger.tags = ['contacts']
-// #swagger.path = '/contacts/{id}'
+// #swagger.path = '/contacts'
 router.post("/", cttControler.createCtt);
 
 // Put

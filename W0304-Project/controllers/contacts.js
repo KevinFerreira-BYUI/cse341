@@ -1,6 +1,5 @@
 const contact = require("../models/contacts");
 
-
 // Get
 const getAll = async (req, res) => {
     //#swagger.tags=['contacts']
@@ -39,7 +38,7 @@ const createCtt = async (req, res) => {
             favColor: req.body.favColor
         };
 
-        const createContact = await contact.insertOne(contactInfos);
+        const createContact = await contact.create(contactInfos);
         res.json(createContact);
         
     } catch(err){

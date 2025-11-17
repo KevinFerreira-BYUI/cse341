@@ -4,28 +4,14 @@ dotenv.config();
 
 const dbUrl = process.env.DATA_BASE_URL;
 
+mongoose.connect(dbUrl);
 
-const contactsConnection = mongoose.createConnection(`${dbUrl}/Contacts`);
-const messagesConnection = mongoose.createConnection(`${dbUrl}/messages`);
-
-contactsConnection.on("connected", () => {
-    console.log("Contacts Db connected")
+mongoose.connection.on("connected", () => {
+    console.log("Db Connected")
 });
 
-contactsConnection.on("error", (err) => {
-    console.log(`Error at Contacts Db: ${err}`);
+mongoose.connection.on("error", (err) => {
+    console.log(`Db error: ${err}`);
 });
 
-
-messagesConnection.on("connected", () => {
-    console.log("Messages Db connected");
-});
-
-messagesConnection.on("error", (err) => {
-    console.log(`Error at Messages Db: ${err}`);
-});
-
-module.exports = {
-    contactsConnection,
-    messagesConnection
-};
+module.exports = mongoose;
