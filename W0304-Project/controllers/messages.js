@@ -1,5 +1,6 @@
 const message = require("../models/messages");
 
+// Get
 const getAllMessages = async (req, res) => {
     //#swagger.tags=['messages']
     try{
@@ -23,6 +24,7 @@ const getMessageById = async (req, res) => {
     }
 };
 
+// Post
 const createMessage = async (req, res) => {
     //#swagger.tags=['messages']
     try{    
@@ -39,6 +41,7 @@ const createMessage = async (req, res) => {
     }
 };
 
+// Put
 const updateMassage = async (req, res) => {
     //#swagger.tags=['messages']
     try{
@@ -52,6 +55,8 @@ const updateMassage = async (req, res) => {
     }
 };
 
+
+// Delete
 const deleteMessage = async (req, res) => {
     //#swagger.tags=['messages']
     try{
