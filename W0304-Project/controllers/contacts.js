@@ -1,4 +1,5 @@
 const contact = require("../models/contacts");
+const createError = require("http-errors");
 
 // Get
 const getAll = async (req, res) => {
@@ -13,20 +14,25 @@ const getAll = async (req, res) => {
     }
 };
 
-const getById = async (req, res) => {
+const getById = async (req, res, next) => {
     //#swagger.tags=['contacts']
     try{
         const contactId = req.params.id;
-        const contacts = await contact.findById(contactId);
-        res.json(contacts);
+        const findContactById = await contact.findById(contactId);
+    
+        if (!findContactById){
+            return next(createError(400, "There is not a contact with this Id. Try again"))        
+        }
+        
+        res.json(findContactById);
 
     } catch(err){
-        throw new Error(`getById error - ${err}`)
+        next(err);
     };
 };
 
 // Post
-const createCtt = async (req, res) => {
+const createCtt = async (req, res, next) => {
     //#swagger.tags=['contacts']
     try{
         const contactInfos = {
@@ -42,14 +48,20 @@ const createCtt = async (req, res) => {
         res.json(createContact);
         
     } catch(err){
-        throw new Error(`create contact error - ${err}`)
+        next(err);
     };
 };
 
 // Put
-const updadeCtt = async (req, res) => {
+const updadeCtt = async (req, res, next) => {
     //#swagger.tags=['contacts']
     try{
+        const contactId = req.params.id;
+        const findCttId = await contact.findById(contactId);
+        if(!findCttId){
+            return next(createError(404, "Id not found. Try again."));
+        }
+
         const contactInfos = {
             firstName: req.body.firstName,
             lastName: req.body.lastName,
@@ -59,31 +71,41 @@ const updadeCtt = async (req, res) => {
             favColor: req.body.favColor
         };
 
-        const contactId = req.params.id;
-
         const updateContact = await contact.updateOne(
             {_id: contactId},
             {$set: contactInfos}
         );
-        res.json(updateContact);
+
+        res.json(
+            {
+                message: `Contact with Id - '${contactId}' has been uptated`,
+                status: "Allright!"
+            }
+        );
 
     } catch(err){
-        throw new Error(`update contact error - ${err}`);
+        next(err);
     }
 }
 
 // Delete
-const deleteCtt = async (req, res) => {
+const deleteCtt = async (req, res, next) => {
     //#swagger.tags=['contacts']
     try{
         const contactId = req.params.id
-        const deleteContact = await contact.deleteOne(
-            {_id: contactId}
-        );
-        res.json(deleteContact);
+        const findCttId = await contact.findById(contactId);
+        if (!findCttId){
+            return next(createError(404, "ID not found or has already been deleted."));
+        }
+
+        const deleteContact = await contact.deleteOne({_id: contactId});
+        res.json({
+            message: `Contact with ID - '${contactId}' has been deleted.`,
+            status: "Alright!"
+        });
 
     } catch(err){
-        throw new Error(`Delete contat error - ${err}`);
+        next(err);
     }
 };
 

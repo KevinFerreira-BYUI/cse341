@@ -97,7 +97,7 @@ const deleteMessage = async (req, res, next) => {
     const findMessageId = await message.findById(messageId);
     
     if (!findMessageId){
-        return next(createError(400, "Message not find or does not exist. Try another Id"))
+        return next(createError(400, "Does not possible to delete. Check the Messag Id and try again."))
     }
 
     try{

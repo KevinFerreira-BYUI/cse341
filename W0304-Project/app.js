@@ -3,7 +3,6 @@ const express = require("express");
 const app = express();
 const corsConfig = require("./utils/corsConfig");
 const bodyParser = require("body-parser");
-const createError = require("http-errors");
 const port = process.env.PORT | 1910;   
 
 // Data Base connection
@@ -19,10 +18,10 @@ app.use(corsConfig);
 const index = require("./routes/index");
 const cttRoute = require("./routes/contacts");
 const messageRoute = require("./routes/messages");
-const swaggerRoute = require("./routes/swagger");   
+const routeHandleErrorMidware = require("./routes/handleRouteError");
+
 
 // App Routes
-app.use("/", swaggerRoute);
 app.use("/", index);
 app.use("/contacts", cttRoute);
 app.use("/messages", messageRoute);
@@ -31,6 +30,8 @@ app.use("/messages", messageRoute);
 // Launch server
 app.listen(port, console.log(`Running at localhost:${port}`));
 
+// Route Error middleware
+app.use(routeHandleErrorMidware);
 
 // Global Error middleware
 app.use((err, req, res, next) => {
