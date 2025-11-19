@@ -1,72 +1,111 @@
 const message = require("../models/messages");
+const contact = require("../models/contacts");
+const createError = require("http-errors");
 
 // Get
-const getAllMessages = async (req, res) => {
+const getAllMessages = async (req, res, next) => {
     //#swagger.tags=['messages']
     try{
-        const messages = await message.find().populate("contacts", "firstName lastName");
-        res.json(messages);
+        const msg = await message.find().populate("contacts", "firstName lastName");
+        
+
+        if (!msg){
+            throw createError(404, "Messages not found");
+        }
+
+        res.json(msg);
+
     } catch(err){
-        throw new Error(`get all messages error - ${err}`);
+        next(err);
     }
 };
 
-const getMessageById = async (req, res) => {
+const getMessageById = async (req, res, next) => {
     //#swagger.tags=['messages']
+    const msgId = req.params.id
     try{
-        const messageId = req.params.id
+        const msgById = await message.findById(msgId).populate("contacts", "firstName lastName");
 
-        const messageById = await message.findById(messageId).populate("contacts", "firstName lastName")
-        res.json(messageById);
+        if(!msgById){
+            return next(createError(404, "The message by this id was not found."));
+        }
+
+        res.json(msgById);
 
     } catch(err){
-        throw new Error(`get message by Id error - ${err}`);
+        next(err);
     }
 };
 
 // Post
-const createMessage = async (req, res) => {
+const createMessage = async (req, res, next) => {
     //#swagger.tags=['messages']
-    try{    
-        const mes = {
-            message: req.body.message,
-            contacts: req.body.contacts
-        }
+    const mes = {
+        message: req.body.message,
+        contacts: req.body.contacts
+    }
 
+    const contactId = await contact.findById(mes.contacts);
+
+    if (!contactId){
+        return next(createError(404, "There is not a contact associated to this Id."));
+    }
+    
+    try{    
         const createMessage = await (await message.create(mes)).populate("contacts", "firstName lastName");
         res.json(createMessage);
 
-    } catch (err){
-        throw new Error(`create message error - ${err}`);
+    } catch(err){
+        next(err);
     }
 };
 
 // Put
-const updateMassage = async (req, res) => {
+const updateMassage = async (req, res, next) => {
     //#swagger.tags=['messages']
+    const mes = {
+        message: req.body.message,
+        contacts: req.body.contacts
+    }
+
+    const messageId = req.params.id
+    const findMessageId = await message.findById(messageId);
+    
+    if(!findMessageId){
+        return next(createError(404, "Message Id not found."));
+    }
+    
+    const contactId = await contact.findById(mes.contacts);
+    if(!contactId){
+        return next(createError(404, "Contact not found"))
+    }
+
     try{
-        const mes = {message: req.body.message}
-        const messageId = req.params.id;
         const update = await message.findByIdAndUpdate(messageId, mes).populate("contacts", "firstName lastName");
+
         res.json(update);
         
     } catch(err){
-        throw new Error(`update message error - ${err}`);
+        next(err);
     }
 };
 
-
 // Delete
-const deleteMessage = async (req, res) => {
+const deleteMessage = async (req, res, next) => {
     //#swagger.tags=['messages']
-    try{
-        const messageId = req.params.id
+    const messageId = req.params.id
+    const findMessageId = await message.findById(messageId);
+    
+    if (!findMessageId){
+        return next(createError(400, "Message not find or does not exist. Try another Id"))
+    }
 
+    try{
         const deleteMess = await message.findByIdAndDelete(messageId).populate("contacts", "firstName lastName");
         res.json(deleteMess);
 
     } catch(err){
-        throw new Error(`delete message error - ${err}`);
+        next(err);
     }
 };
 
