@@ -103,7 +103,7 @@ const deleteMessage = async (req, res, next) => {
     try{
         const deleteMess = await message.findByIdAndDelete(messageId).populate("contacts", "firstName lastName");
         res.json({
-            message: `Contact with ID - '${contactId}' has been deleted.`,
+            message: `Message with ID - '${messageId}' has been deleted.`,
             status: "Alright!"
         });
 
