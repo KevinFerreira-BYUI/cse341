@@ -9,7 +9,7 @@ const doc = {
     },
 
     // host: "localhost:1910",
-    host: env === "production" ? "localhost:1910" : "localhost:1910",
+    host: env === "production" ? "https://cse341-0304-project.onrender.com/" : "localhost:1910",
 
     //schemes: ["http", "https"],
     schemes: env === "production" ? ["https"] : ["http"],
