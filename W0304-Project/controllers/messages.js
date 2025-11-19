@@ -97,12 +97,15 @@ const deleteMessage = async (req, res, next) => {
     const findMessageId = await message.findById(messageId);
     
     if (!findMessageId){
-        return next(createError(400, "Does not possible to delete. Check the Messag Id and try again."))
+        return next(createError(404, "ID not found or has already been deleted."));
     }
 
     try{
         const deleteMess = await message.findByIdAndDelete(messageId).populate("contacts", "firstName lastName");
-        res.json(deleteMess);
+        res.json({
+            message: `Contact with ID - '${contactId}' has been deleted.`,
+            status: "Alright!"
+        });
 
     } catch(err){
         next(err);
