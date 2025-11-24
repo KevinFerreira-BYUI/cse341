@@ -1,9 +1,9 @@
 const router = require("express").Router();
-const indexCont = require("../controllers/index");
+const {showIndex} = require("../controllers/index");
 const swaggerRoute = require("./swagger");
 
 router.use("/", swaggerRoute);
 
-router.get("/", indexCont.showIndex);
+router.get("/", showIndex);
 
 module.exports = router;
