@@ -1,6 +1,7 @@
 const router = require("express").Router()
 
 router.get("/", function(req, res, next) {
+    //#swagger.ignore = true
     req.logOut(function(err){
         if(err){
             return next(err)

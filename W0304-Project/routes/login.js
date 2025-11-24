@@ -1,6 +1,10 @@
 const router = require("express").Router()
 const passport = require("passport");
 
-router.get("/", passport.authenticate("github"));
+
+router.get("/", 
+    //#swagger.ignore = true
+    passport.authenticate("github")
+);
 
 module.exports = router;

@@ -2,7 +2,9 @@ const express = require("express");
 const router = express.Router();
 const passport = require("passport");
 
-router.get("/github/callback", passport.authenticate("github", {
+router.get("/github/callback", passport.authenticate("github",
+    //#swagger.ignore = true
+    {
         failureRedirect: "/api-docs"
     }),
     (req, res) => {
